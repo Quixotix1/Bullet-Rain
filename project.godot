@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 EventBus="*uid://0ro54fn6gry0"
+BulletPool="*uid://6afk6fnhunvv"
 
 [debug]
 
@@ -73,6 +74,7 @@ restart={
 [physics]
 
 3d/physics_engine="Jolt Physics"
+jolt_physics_3d/limits/max_bodies=81920
 
 [rendering]
 

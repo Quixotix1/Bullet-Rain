@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cldp1huwuh32k" path="res://scenes/player.tscn" id="1_sugp2"]
 [ext_resource type="Script" uid="uid://dvllk50h1skm3" path="res://scripts/game_manager.gd" id="1_tipki"]
+[ext_resource type="Script" uid="uid://6afk6fnhunvv" path="res://scripts/bullet_pool.gd" id="2_85g3d"]
 [ext_resource type="Theme" uid="uid://c0odjd3dxud76" path="res://resources/ui_theme.tres" id="3_sugp2"]
 [ext_resource type="Script" uid="uid://c2dy4morcnx2h" path="res://scripts/enemy.gd" id="3_tefeu"]
 [ext_resource type="Script" uid="uid://emyq4f264xhg" path="res://scripts/health_bar.gd" id="4_jyhfs"]
@@ -41,6 +42,9 @@ frustum_focal_length = 52.54
 [node name="Node3D" type="Node3D" unique_id=2096540701]
 script = ExtResource("1_tipki")
 
+[node name="BulletPool" type="Node3D" parent="." unique_id=652952480]
+script = ExtResource("2_85g3d")
+
 [node name="Ground" type="StaticBody3D" parent="." unique_id=1689038614]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=985454048]
@@ -62,6 +66,7 @@ bullet_timer = NodePath("BulletTimer")
 wave_timer = NodePath("WaveTimer")
 num_bullets_per_wave = 1000
 initial_bullet_wait_time = 0.01
+num_initial_bullets = 3000
 
 [node name="BulletTimer" type="Timer" parent="Enemy" unique_id=1752708383]
 wait_time = 0.1
@@ -69,7 +74,7 @@ one_shot = true
 autostart = true
 
 [node name="WaveTimer" type="Timer" parent="Enemy" unique_id=1165681883]
-wait_time = 10.0
+wait_time = 5.0
 one_shot = true
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1496310413]

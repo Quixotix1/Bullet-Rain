@@ -1,0 +1,141 @@
+[gd_scene format=3 uid="uid://bxs5sqb8yb6xh"]
+
+[ext_resource type="PackedScene" uid="uid://cldp1huwuh32k" path="res://scenes/player.tscn" id="1_sugp2"]
+[ext_resource type="Script" uid="uid://dvllk50h1skm3" path="res://scripts/game_manager.gd" id="1_tipki"]
+[ext_resource type="Theme" uid="uid://c0odjd3dxud76" path="res://resources/ui_theme.tres" id="3_sugp2"]
+[ext_resource type="Script" uid="uid://c2dy4morcnx2h" path="res://scripts/enemy.gd" id="3_tefeu"]
+[ext_resource type="Script" uid="uid://emyq4f264xhg" path="res://scripts/health_bar.gd" id="4_jyhfs"]
+[ext_resource type="PackedScene" uid="uid://chivfc16aocvs" path="res://scenes/wall.tscn" id="4_tbgi4"]
+[ext_resource type="PackedScene" uid="uid://dgjy2rtj0v7rl" path="res://models/enemy.glb" id="5_tbgi4"]
+[ext_resource type="PackedScene" uid="uid://d22uk0p3phqjq" path="res://scenes/bullet.tscn" id="7_o6xl0"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_dy771"]
+size = Vector2(20, 20)
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_ahg1b"]
+
+[sub_resource type="Environment" id="Environment_ahg1b"]
+background_energy_multiplier = 3.6
+ambient_light_source = 2
+ambient_light_color = Color(0.28565156, 0.06506258, 0.40483725, 1)
+ambient_light_energy = 9.09
+ssao_enabled = true
+ssao_radius = 1.35
+ssao_intensity = 3.5
+glow_enabled = true
+glow_intensity = 0.61
+glow_strength = 1.02
+glow_bloom = 0.32
+fog_enabled = true
+fog_light_color = Color(0.16338846, 0.029748559, 0.20730457, 1)
+fog_light_energy = 1.8
+fog_density = 0.2034
+
+[sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_tipki"]
+exposure_multiplier = 1.221
+auto_exposure_enabled = true
+auto_exposure_scale = 0.5
+frustum_focus_distance = 2.0
+frustum_focal_length = 52.54
+
+[node name="Node3D" type="Node3D" unique_id=2096540701]
+script = ExtResource("1_tipki")
+
+[node name="Ground" type="StaticBody3D" parent="." unique_id=1689038614]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=985454048]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.014555931, -0.012208462, 0.012717247)
+mesh = SubResource("PlaneMesh_dy771")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" unique_id=905414276]
+shape = SubResource("WorldBoundaryShape3D_ahg1b")
+
+[node name="Player" parent="." unique_id=1443242996 groups=["Player"] instance=ExtResource("1_sugp2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+
+[node name="Enemy" parent="." unique_id=1816823927 node_paths=PackedStringArray("parent", "bullet_timer", "wave_timer") instance=ExtResource("5_tbgi4")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, -1, -3.331)
+script = ExtResource("3_tefeu")
+bullet = ExtResource("7_o6xl0")
+parent = NodePath("..")
+bullet_timer = NodePath("BulletTimer")
+wave_timer = NodePath("WaveTimer")
+num_bullets_per_wave = 1000
+initial_bullet_wait_time = 0.01
+
+[node name="BulletTimer" type="Timer" parent="Enemy" unique_id=1752708383]
+wait_time = 0.1
+one_shot = true
+autostart = true
+
+[node name="WaveTimer" type="Timer" parent="Enemy" unique_id=1165681883]
+wait_time = 10.0
+one_shot = true
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1496310413]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 6, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1151603164]
+transform = Transform3D(0.70710677, 0.61237246, -0.35355335, 0, 0.49999997, 0.86602545, 0.70710677, -0.61237246, 0.35355335, 0, 2, 0)
+
+[node name="Walls" type="Node3D" parent="." unique_id=195167362]
+
+[node name="BackWall" parent="Walls" unique_id=1711383167 instance=ExtResource("4_tbgi4")]
+transform = Transform3D(6, 0, 0, 0, 1, 0, 0, 0, 0.5, 0, 0, 3.5)
+
+[node name="LeftWall" parent="Walls" unique_id=1000245966 instance=ExtResource("4_tbgi4")]
+transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 8.5, -3.25, 0, -0.5)
+
+[node name="RightWall" parent="Walls" unique_id=47707703 instance=ExtResource("4_tbgi4")]
+transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 8.5, 3.25, 0, -0.5)
+
+[node name="FrontWall" parent="Walls" unique_id=219349947 instance=ExtResource("4_tbgi4")]
+transform = Transform3D(6, 0, 0, 0, 1, 0, 0, 0, 0.5, 0, 0, -4.5)
+
+[node name="Canvas" type="Control" parent="." unique_id=423272874]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PlayerHealth" type="ProgressBar" parent="Canvas" unique_id=219264083 node_paths=PackedStringArray("player")]
+layout_mode = 0
+offset_left = 80.0
+offset_top = 40.0
+offset_right = 320.0
+offset_bottom = 67.0
+mouse_filter = 2
+theme = ExtResource("3_sugp2")
+max_value = 10.0
+value = 10.0
+script = ExtResource("4_jyhfs")
+player = NodePath("../../Player")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Canvas/PlayerHealth" unique_id=494952059]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -21.5
+offset_right = 120.0
+offset_bottom = 18.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0.09019608, 0.20784314, 0.44313726, 1)
+theme_override_constants/outline_size = 4
+bbcode_enabled = true
+text = "[b]Player Health"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PostProcessing" type="WorldEnvironment" parent="." unique_id=1123296769]
+environment = SubResource("Environment_ahg1b")
+camera_attributes = SubResource("CameraAttributesPhysical_tipki")
+
+[connection signal="timeout" from="Enemy/BulletTimer" to="Enemy" method="_on_bullet_timer_timeout"]
+[connection signal="timeout" from="Enemy/WaveTimer" to="Enemy" method="_on_wave_timer_timeout"]

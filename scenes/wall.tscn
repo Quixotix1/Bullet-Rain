@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://chivfc16aocvs"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ahg1b"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ahg1b"]
+
+[node name="Wall" type="MeshInstance3D" unique_id=1711383167]
+mesh = SubResource("BoxMesh_ahg1b")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=302959351]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1684885373]
+shape = SubResource("BoxShape3D_ahg1b")
